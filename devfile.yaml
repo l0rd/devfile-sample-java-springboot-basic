@@ -63,9 +63,9 @@ commands:
       group:
         kind: debug
         isDefault: true
-  - id: build-image
-    apply:
-      component: outerloop-build
+#   - id: build-image
+#     apply:
+#       component: outerloop-build
   - id: deployk8s
     apply:
       component: outerloop-deploy
