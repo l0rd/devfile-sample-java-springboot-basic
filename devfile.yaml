@@ -30,10 +30,13 @@ components:
   - name: tools
     container:
       image: quay.io/eclipse/che-java11-maven:7.36.0
-      memoryLimit: 768Mi
+      memoryLimit: 1Gi
+      cpuLimit: 500m
       mountSources: true
       endpoints:
-      - name: '8080-tcp'
+      - name: 8080-tcp
+        exposure: public
+        protocol: http
         targetPort: 8080
       - name: debug
         exposure: none
