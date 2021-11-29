@@ -35,6 +35,10 @@ components:
       endpoints:
       - name: '8080-tcp'
         targetPort: 8080
+      - name: debug
+        exposure: none
+        protocol: tcp
+        targetPort: 5005
       volumeMounts:
         - name: m2
           path: /home/user/.m2
@@ -61,7 +65,7 @@ commands:
   - id: debug
     exec:
       component: tools
-      commandLine: "java -Xdebug -Xrunjdwp:server=y,transport=dt_socket,address=${DEBUG_PORT},suspend=n -jar target/*.jar"
+      commandLine: "java -Xdebug -Xrunjdwp:server=y,transport=dt_socket,address=5005,suspend=n -jar target/*.jar"
       workingDir: "$PROJECTS_ROOT/devfile-sample-java-springboot-basic"
       group:
         kind: debug
