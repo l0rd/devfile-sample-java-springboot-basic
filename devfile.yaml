@@ -17,13 +17,13 @@ starterProjects:
       remotes:
         origin: "https://github.com/odo-devfiles/springboot-ex.git"
 components:
-#   - name: outerloop-build
-#     image:
-#       imageName: java-springboot-image:latest
-#       dockerfile:
-#         uri: docker/Dockerfile
-#         buildContext: .
-#         rootRequired: false
+  - name: outerloop-build
+    image:
+      imageName: java-springboot-image:latest
+      dockerfile:
+        uri: docker/Dockerfile
+        buildContext: .
+        rootRequired: false
   - name: outerloop-deploy
     kubernetes:
       uri: outerloop-deploy.yaml
@@ -73,17 +73,17 @@ commands:
       group:
         kind: debug
         isDefault: true
-#   - id: build-image
-#     apply:
-#       component: outerloop-build
+  - id: build-image
+    apply:
+      component: outerloop-build
   - id: deployk8s
     apply:
       component: outerloop-deploy
-#   - id: deploy
-#     composite:
-#       commands:
-#         - build-image
-#         - deployk8s
-#       group:
-#         kind: deploy
-#         isDefault: true
+  - id: deploy
+    composite:
+      commands:
+        - build-image
+        - deployk8s
+      group:
+        kind: deploy
+        isDefault: true
