@@ -11,6 +11,8 @@ metadata:
   language: "java"
   provider: Red Hat
   supportUrl: https://github.com/devfile-samples/devfile-support#support-information
+variables:
+  DEBUG_PORT: 5050 
 starterProjects:
   - name: springbootproject
     git:
@@ -33,6 +35,9 @@ components:
       memoryLimit: 1Gi
       cpuLimit: 500m
       mountSources: true
+      env:
+      - name: DEBUG_PORT
+        value: {{DEBUG_PORT}}
       endpoints:
       - name: 8080-tcp
         exposure: public
@@ -41,7 +46,7 @@ components:
       - name: debug
         exposure: none
         protocol: tcp
-        targetPort: 5005
+        targetPort: {{DEBUG_PORT}}
       volumeMounts:
         - name: m2
           path: /home/user/.m2
@@ -53,7 +58,6 @@ commands:
     exec:
       component: tools
       commandLine: "mvn clean -Dmaven.repo.local=/home/user/.m2/repository package -Dmaven.test.skip=true"
-      workingDir: "$PROJECTS_ROOT/devfile-sample-java-springboot-basic"
       group:
         kind: build
         isDefault: true
@@ -61,15 +65,13 @@ commands:
     exec:
       component: tools
       commandLine: "mvn -Dmaven.repo.local=/home/user/.m2/repository spring-boot:run"
-      workingDir: "$PROJECTS_ROOT/devfile-sample-java-springboot-basic"
       group:
         kind: run
         isDefault: true
   - id: debug
     exec:
       component: tools
-      commandLine: "java -Xdebug -Xrunjdwp:server=y,transport=dt_socket,address=5005,suspend=n -jar target/*.jar"
-      workingDir: "$PROJECTS_ROOT/devfile-sample-java-springboot-basic"
+      commandLine: "java -Xdebug -Xrunjdwp:server=y,transport=dt_socket,address=${DEBUG_PORT},suspend=n -jar target/*.jar"
       group:
         kind: debug
         isDefault: true
