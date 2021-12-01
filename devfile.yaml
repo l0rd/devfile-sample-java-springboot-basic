@@ -27,7 +27,6 @@ components:
       image: quay.io/eclipse/che-java11-maven:7.36.0
       memoryLimit: 1Gi
       cpuLimit: 500m
-      mountSources: true
       env:
       - name: DEBUG_PORT
         value: '5050'
