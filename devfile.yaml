@@ -29,7 +29,7 @@ components:
       cpuLimit: 500m
       env:
       - name: DEBUG_PORT
-        value: '5050'
+        value: '5005'
       endpoints:
       - name: 8080-tcp
         exposure: public
@@ -38,7 +38,7 @@ components:
       - name: debug
         exposure: none
         protocol: tcp
-        targetPort: 5050
+        targetPort: 5005
       volumeMounts:
         - name: m2
           path: /home/user/.m2
