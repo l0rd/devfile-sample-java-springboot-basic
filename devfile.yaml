@@ -30,7 +30,7 @@ components:
       mountSources: true
       env:
       - name: DEBUG_PORT
-        value: 5050
+        value: '5050'
       endpoints:
       - name: 8080-tcp
         exposure: public
