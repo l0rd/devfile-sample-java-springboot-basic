@@ -12,21 +12,14 @@ metadata:
   provider: Red Hat
   supportUrl: https://github.com/devfile-samples/devfile-support#support-information
 components:
-  - name: outerloop-build
-    image:
-      imageName: java-springboot-image:latest
-      dockerfile:
-        uri: docker/Dockerfile
-        buildContext: .
-        rootRequired: false
   - name: outerloop-deploy
     kubernetes:
       uri: outerloop-deploy.yaml
   - name: tools
     container:
       image: quay.io/eclipse/che-java11-maven:7.36.0
-      memoryLimit: 1Gi
-      cpuLimit: 500m
+      memoryLimit: 2Gi
+      cpuLimit: 1000m
       env:
       - name: DEBUG_PORT
         value: '5005'
@@ -50,6 +43,7 @@ commands:
     exec:
       component: tools
       commandLine: "mvn clean -Dmaven.repo.local=/home/user/.m2/repository package -Dmaven.test.skip=true"
+      workingDir: "$PROJECTS_ROOT/devfile-sample-java-springboot-basic"
       group:
         kind: build
         isDefault: true
@@ -57,6 +51,7 @@ commands:
     exec:
       component: tools
       commandLine: "mvn -Dmaven.repo.local=/home/user/.m2/repository spring-boot:run"
+      workingDir: "$PROJECTS_ROOT/devfile-sample-java-springboot-basic"
       group:
         kind: run
         isDefault: true
@@ -64,20 +59,10 @@ commands:
     exec:
       component: tools
       commandLine: "java -Xdebug -Xrunjdwp:server=y,transport=dt_socket,address=${DEBUG_PORT},suspend=n -jar target/*.jar"
+      workingDir: "$PROJECTS_ROOT/devfile-sample-java-springboot-basic"
       group:
         kind: debug
         isDefault: true
-  - id: build-image
-    apply:
-      component: outerloop-build
   - id: deployk8s
     apply:
       component: outerloop-deploy
-  - id: deploy
-    composite:
-      commands:
-        - build-image
-        - deployk8s
-      group:
-        kind: deploy
-        isDefault: true
