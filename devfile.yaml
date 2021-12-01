@@ -11,13 +11,6 @@ metadata:
   language: "java"
   provider: Red Hat
   supportUrl: https://github.com/devfile-samples/devfile-support#support-information
-variables:
-  DEBUG_PORT: 5050 
-starterProjects:
-  - name: springbootproject
-    git:
-      remotes:
-        origin: "https://github.com/odo-devfiles/springboot-ex.git"
 components:
   - name: outerloop-build
     image:
@@ -37,7 +30,7 @@ components:
       mountSources: true
       env:
       - name: DEBUG_PORT
-        value: {{DEBUG_PORT}}
+        value: 5050
       endpoints:
       - name: 8080-tcp
         exposure: public
@@ -46,7 +39,7 @@ components:
       - name: debug
         exposure: none
         protocol: tcp
-        targetPort: {{DEBUG_PORT}}
+        targetPort: 5050
       volumeMounts:
         - name: m2
           path: /home/user/.m2
